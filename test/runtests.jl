@@ -10,7 +10,7 @@ function test_sigint()
 	X[41:50] = 1.0
 	intervals = PeakFinder.get_intervals(X,0.0, 10)
 	@test intervals == {41 => 10}
-	println("sigint test passed")
+	println("Sigint test passed")
 end
 
 function test_peaks()
@@ -19,8 +19,16 @@ function test_peaks()
 	X[21:30] = exp(-x.^2/2) #gaussian peak
 	peaks = PeakFinder.get_peaks(X, 0.0, 5)
 	@test peaks[1] == PeakFinder.Peak(21, 10, 1.0, 2.506624530883954, 6)
-	println("peaks test passed")
+	println("Peak finding test passed")
+end
+
+function test_peak_overlaps()
+	p1 = PeakFinder.Peak(5,5,1.0,2.0,7)
+	p2 = PeakFinder.Peak(6,5,1.0,2.0,10)
+	@test PeakFinder.overlaps(p1,p2)
+	println("Peak overlap test passed")
 end
 
 test_sigint()
 test_peaks()
+test_peak_overlaps()
