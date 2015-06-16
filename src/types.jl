@@ -1,3 +1,5 @@
+import Base.==, Base.isless
+
 type Peak{T<:Real}
 	start::Int64
 	length::Int64
@@ -12,6 +14,10 @@ end
 
 function isless(p1::Peak, p2::Peak)
 	p1.area < p2.area
+end
+
+function overlaps(p1::Peak, p2::Peak)
+	return (p1.start <= p2.start <= p1.start + p1.length-1) || (p2.start <= p1.start <= p2.start+p2.length-1)
 end
 
 
