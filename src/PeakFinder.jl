@@ -52,13 +52,12 @@ function group_peaks(peaks::Array{Peak,1})
 	push!(newpeaks, speaks[1])
 	i = 2
 	while i <= length(speaks)
-		addpeak = false
+		addpeak = true
 		j = 1
 		while j <= length(newpeaks)
-			if !overlaps(speaks[i], newpeaks[j])
-				addpeak = true
-			else
+			if overlaps(speaks[i], newpeaks[j])
 				addpeak = false
+				break
 			end
 			j += 1
 		end

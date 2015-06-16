@@ -35,8 +35,9 @@ function test_group_peaks()
 	push!(peaks, PeakFinder.Peak(4.0, 6.0, 4.0, 8.0, 6.0))
 	push!(peaks, PeakFinder.Peak(10, 4.0, 4.0, 12.0, 12.0))
 	push!(peaks, PeakFinder.Peak(11, 3.0, 7.0, 13.0, 13.0))
+	push!(peaks, PeakFinder.Peak(4.0, 6.0, 4.0, 3.0, 6.0))
 	newpeaks = PeakFinder.group_peaks(peaks)
-	@test newpeaks[1] == peaks[end] && newpeaks[2] == peaks[1]
+	@test newpeaks[1] == peaks[end-1] && newpeaks[2] == peaks[1]
 	println("Peak grouping test passed")
 end
 
