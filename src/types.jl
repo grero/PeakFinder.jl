@@ -1,11 +1,11 @@
 import Base.==, Base.isless
 
-type Peak{T<:Real}
-	start::Int64
-	length::Int64
-	height::T
-	area::T
-	pidx::Int64
+type Peak
+	start::Float64
+	length::Float64
+	height::Float64
+	area::Float64
+	pidx::Float64
 end
 
 function ==(p1::Peak, p2::Peak)

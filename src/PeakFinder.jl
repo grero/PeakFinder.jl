@@ -30,7 +30,7 @@ function get_intervals(X::Array{Float64,1},limit::Real=3,minnbins::Integer=5)
     return intervals
 end
 
-function get_peaks{T<:Real}(X::Array{T,1}, limit::T=0.0, minnbins::Int64=5)
+function get_peaks{T<:Real}(X::Array{T,1}, timepts::Array{Float64,1}, limit::T=0.0, minnbins::Int64=5)
 	intervals = get_intervals(X,limit,minnbins)
 	peaks = Array(Peak,length(intervals))
 	i = 1
@@ -43,5 +43,7 @@ function get_peaks{T<:Real}(X::Array{T,1}, limit::T=0.0, minnbins::Int64=5)
 	end
 	return peaks
 end
+
+get_peaks(X, limit, minnbins) = get_peaks(X, [1.0:length(X)], limit,minnbins)
 
 end #module
