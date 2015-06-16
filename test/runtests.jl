@@ -29,6 +29,17 @@ function test_peak_overlaps()
 	println("Peak overlap test passed")
 end
 
+function test_group_peaks()
+	peaks = Array(PeakFinder.Peak,0)
+	push!(peaks, PeakFinder.Peak(4.0, 5.0, 4.0, 10.0, 6.0))
+	push!(peaks, PeakFinder.Peak(4.0, 6.0, 4.0, 8.0, 6.0))
+	push!(peaks, PeakFinder.Peak(10, 4.0, 4.0, 12.0, 12.0))
+	push!(peaks, PeakFinder.Peak(11, 3.0, 7.0, 13.0, 13.0))
+	newpeaks = PeakFinder.group_peaks(peaks)
+	@test newpeaks[1] == peaks[end] && newpeaks[2] == peaks[1]
+	println("Peak grouping test passed")
+end
+
 test_sigint()
 test_peaks()
 test_peak_overlaps()

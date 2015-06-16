@@ -46,4 +46,28 @@ end
 
 get_peaks(X, limit, minnbins) = get_peaks(X, [1.0:length(X)], limit,minnbins)
 
+function group_peaks(peaks::Array{Peak,1})
+	speaks = reverse(sort(peaks))
+	newpeaks = Array(Peak,0)
+	push!(newpeaks, speaks[1])
+	i = 2
+	while i <= length(speaks)
+		addpeak = false
+		j = 1
+		while j <= length(newpeaks)
+			if !overlaps(speaks[i], newpeaks[j])
+				addpeak = true
+			else
+				addpeak = false
+			end
+			j += 1
+		end
+		if addpeak
+			push!(newpeaks, speaks[i])
+		end
+		i += 1
+	end
+	newpeaks
+end
+
 end #module
