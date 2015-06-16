@@ -39,7 +39,7 @@ function get_peaks{T<:Real}(X::Array{T,1}, timepts::Array{Float64,1}, limit::T=0
 		_x = X[k:k-1+v]
 		(mx,idx) = findmax(_x)
 		_area = sum(_x)
-		peaks[i] = Peak(timepts[k],timepts[k+v-1]-timepts[k]+dt[k],mx,_area,timepts[idx])
+		peaks[i] = Peak(timepts[k],timepts[k+v-1]-timepts[k]+dt[k],mx,_area,timepts[k+idx-1])
 		i +=1
 	end
 	return peaks

@@ -18,13 +18,13 @@ function test_peaks()
 	x = [-5:4]
 	X[21:30] = exp(-x.^2/2) #gaussian peak
 	peaks = PeakFinder.get_peaks(X, 0.0, 5)
-	@test peaks[1] == PeakFinder.Peak(21, 10, 1.0, 2.506624530883954, 6)
+	@test peaks[1] == PeakFinder.Peak(21, 10, 1.0, 2.506624530883954, 26.0)
 	#test edge case using time point vector
 	fill!(X, 0)
 	X[41:50] = exp(-x.^2/2) #gaussian peak
 	t = cumsum(fill(5.0, 50))
 	peaks = PeakFinder.get_peaks(X, t, 0.0, 5)
-	@test peaks[1] == PeakFinder.Peak(205.0,50.0,1.0,2.506624530883954,30.0)
+	@test peaks[1] == PeakFinder.Peak(205.0,50.0,1.0,2.506624530883954,230.0)
 	println("Peak finding test passed")
 end
 
