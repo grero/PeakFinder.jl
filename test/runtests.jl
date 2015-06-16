@@ -44,3 +44,4 @@ end
 test_sigint()
 test_peaks()
 test_peak_overlaps()
+test_group_peaks()
