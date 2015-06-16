@@ -35,8 +35,10 @@ function get_peaks{T<:Real}(X::Array{T,1}, limit::T=0.0, minnbins::Int64=5)
 	peaks = Array(Peak,length(intervals))
 	i = 1
 	for (k,v) in intervals
-		(mx,idx) = findmax(X[k:k-1+v])
-		peaks[i] = Peak(k,v,mx,idx)
+		_x = X[k:k-1+v]
+		(mx,idx) = findmax(_x)
+		_area = sum(_x)
+		peaks[i] = Peak(k,v,mx,_area,idx)
 		i +=1
 	end
 	return peaks

@@ -18,7 +18,7 @@ function test_peaks()
 	x = [-5:4]
 	X[21:30] = exp(-x.^2/2) #gaussian peak
 	peaks = PeakFinder.get_peaks(X, 0.0, 5)
-	@test peaks[1] == PeakFinder.Peak(21, 10, 1.0, 6)
+	@test peaks[1] == PeakFinder.Peak(21, 10, 1.0, 2.506624530883954, 6)
 	println("peaks test passed")
 end
 
