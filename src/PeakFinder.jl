@@ -30,6 +30,36 @@ function get_intervals(X::Array{Float64,1},limit::Real=3,minnbins::Integer=5)
     return intervals
 end
 
+function get_contiguous!(counts::Dict{Int64,Int64},sidx::AbstractArray{Int64,1})
+	nsig = length(sidx)
+	nn = 0
+	for j in 2:nsig
+		if sidx[j] - sidx[j-1] == 1 #find neighburing bins
+			nn += 1
+		elseif nn >= 1
+			nn += 1
+			#println("Found group of length $(nn) starting at $(j-nn)")
+			counts[nn] = get(counts, nn, 0) + 1
+			nn = 0
+		else
+			nn = 0
+		end
+	end
+	#handle edge
+	if nn >= 1
+		nn += 1
+		#println("Found group of length $(nn) starting at $(nsig-nn)")
+		counts[nn] = get(counts, nn, 0) + 1
+	end
+end
+
+function get_contiguous(sidx::AbstractArray{Int64,1})
+	counts = Dict{Int64,Int64}()
+	get_contiguous!(counts, sidx)
+	counts
+end
+
+
 function get_peaks{T<:Real}(X::Array{T,1}, timepts::Array{Float64,1}, limit::T=0.0, minnbins::Int64=5)
 	intervals = get_intervals(X,limit,minnbins)
 	peaks = Array(Peak,length(intervals))

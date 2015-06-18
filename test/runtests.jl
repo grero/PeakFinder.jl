@@ -1,6 +1,13 @@
 import PeakFinder
 using Base.Test
 
+function test_contiguous()
+	sidx = [1,2,3, 6,7, 10, 12,13,14]
+	counts = PeakFinder.get_contiguous(sidx)
+	@test counts[2] == 1 && counts[3] == 2
+	println("Contigous bins test passsed")
+end
+
 function test_sigint()
 	X = zeros(50)
 	X[21:30] = 1.0
@@ -47,6 +54,7 @@ function test_group_peaks()
 	println("Peak grouping test passed")
 end
 
+test_contiguous()
 test_sigint()
 test_peaks()
 test_peak_overlaps()
