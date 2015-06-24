@@ -1,6 +1,18 @@
 import PeakFinder
 using Base.Test
 
+function test_random_grouping()
+    srand(1234)
+    ngroups, PP = PeakFinder.check_random_groups(250,20)
+    @test ngroups == [2,3,4,5,6]
+    @test_approx_eq PP[1] 0.9246992215145081
+    @test_approx_eq PP[2] 0.9938428874734607
+    @test_approx_eq PP[3] 0.9995046001415429
+    @test_approx_eq PP[4] 0.999929228591649
+    @test_approx_eq PP[5] 1.0
+    println("Random grouping test passed")
+end
+
 function test_contiguous()
 	sidx = [1,2,3, 6,7, 10, 12,13,14]
 	counts = PeakFinder.get_contiguous(sidx)
@@ -59,3 +71,4 @@ test_sigint()
 test_peaks()
 test_peak_overlaps()
 test_group_peaks()
+test_random_grouping()

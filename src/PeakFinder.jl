@@ -100,4 +100,22 @@ function group_peaks(peaks::Array{Peak,1})
 	newpeaks
 end
 
+function check_random_groups(nbins::Int64, nsig::Int64,nruns::Int64=10000)
+    @assert nsig <= nbins
+    counts = Dict{Int64, Int64}()
+    idx = [1:nbins]
+    sidx = zeros(Int64,nsig)
+    for i in 1:nruns
+        shuffle!(idx)
+        for j in 1:nsig
+            @inbounds _idx = idx[j]
+            @inbounds sidx[j] = _idx
+        end
+        sort!(sidx)
+        get_contiguous!(counts, sidx)
+    end
+    sidx = sortperm(collect(keys(counts)))
+    collect(keys(counts))[sidx], cumsum(collect(values(counts))[sidx])./sum(values(counts))
+end
+
 end #module
