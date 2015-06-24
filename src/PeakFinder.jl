@@ -89,7 +89,11 @@ function get_peaks{T<:Real}(X::Array{T,2}, timepts::Array{Float64,1}, limit::T=0
                 continue #skip this cell
             end
             ngroups,PP = PeakFinder.check_random_groups(nbins, nsig)
-            nn = ngroups[findfirst(1-PP.<pvalue)]
+            idx = findfirst(1-PP.<pvalue)
+            if idx == 0
+                continue #ksip this cell
+            end
+            nn = ngroups[idx]
         elseif isa(minnbins, Symbol)
             nn = 5
         else
