@@ -77,6 +77,20 @@ end
 
 get_peaks(X, limit, minnbins) = get_peaks(X, [1.0:length(X)], limit,minnbins)
 
+function get_peaks{T<:Real}(X::Array{T,2}, timepts::Array{Float64,1}, limit::T=0.0, minnbins::Int64=5)
+    nbins, ncells = size(X)
+    peaks = Array(Peak,0)
+    cellidx = Array(Int64,0)
+    for i in 1:ncells
+        _peaks = get_peaks(X[:,i], timepts, limit, minnbins)
+        if !isempty(_peaks)
+            append!(peaks, _peaks)
+            append!(cellidx, fill(i,length(_peaks)))
+        end
+    end
+    peaks, cellidx
+end
+
 function group_peaks(peaks::Array{Peak,1})
 	speaks = reverse(sort(peaks))
 	newpeaks = Array(Peak,0)
