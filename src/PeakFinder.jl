@@ -77,18 +77,36 @@ end
 
 get_peaks(X, limit, minnbins) = get_peaks(X, [1.0:length(X)], limit,minnbins)
 
-function get_peaks{T<:Real}(X::Array{T,2}, timepts::Array{Float64,1}, limit::T=0.0, minnbins::Int64=5)
+function get_peaks{T<:Real}(X::Array{T,2}, timepts::Array{Float64,1}, limit::T=0.0, minnbins::Union(Int64,Symbol)=5,pvalue::Float64=0.01)
     nbins, ncells = size(X)
     peaks = Array(Peak,0)
     cellidx = Array(Int64,0)
+    nsigbins = Array(Int64,0)
     for i in 1:ncells
-        _peaks = get_peaks(X[:,i], timepts, limit, minnbins)
+        if minnbins == :optimum
+            nsig = sum(X[:,i].>limit)
+            if nsig == 0
+                continue #skip this cell
+            end
+            ngroups,PP = PeakFinder.check_random_groups(nbins, nsig)
+            nn = ngroups[findfirst(1-PP.<pvalue)]
+        elseif isa(minnbins, Symbol)
+            nn = 5
+        else
+            nn = minnbins
+        end
+        _peaks = get_peaks(X[:,i], timepts, limit, nn)
         if !isempty(_peaks)
             append!(peaks, _peaks)
             append!(cellidx, fill(i,length(_peaks)))
+            append!(nsigbins, fill(nn, length(_peaks)))
         end
     end
-    peaks, cellidx
+    if minnbins == :optimum
+        return peaks, cellidx, nsigbins
+    else
+        return peaks, cellidx
+    end
 end
 
 function group_peaks(peaks::Array{Peak,1})

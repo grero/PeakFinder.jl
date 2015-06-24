@@ -54,6 +54,15 @@ function test_peaks()
 	@test peaks[2] == PeakFinder.Peak(205.0,50.0,1.0,2.506624530883954,230.0)
         @test cellidx[2] == 2
         println("Finding peaks for multiple cells test passed")
+        srand(1234)
+	peaks,cellidx,minnbins = PeakFinder.get_peaks(X, t, 0.0, :optimum, 0.01)
+	@test peaks[1] == PeakFinder.Peak(105, 50.0, 1.0, 2.506624530883954, 130.0)
+        @test cellidx[1] == 1
+        @test minnbins[1] == 4
+	@test peaks[2] == PeakFinder.Peak(205.0,50.0,1.0,2.506624530883954,230.0)
+        @test cellidx[2] == 2
+        @test minnbins[2] == 4
+        println("Finding peaks for multiple cells with optimum bins test passed")
 end
 
 function test_peak_overlaps()
