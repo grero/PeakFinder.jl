@@ -86,7 +86,7 @@ end
 
 test_contiguous()
 test_sigint()
+test_random_grouping()
 test_peaks()
 test_peak_overlaps()
 test_group_peaks()
-test_random_grouping()
