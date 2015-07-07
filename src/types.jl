@@ -1,4 +1,4 @@
-import Base.==, Base.isless
+import Base.==, Base.isless, Base.intersect, Base.in
 
 type Peak
 	start::Float64
@@ -19,6 +19,8 @@ end
 function overlaps(p1::Peak, p2::Peak)
 	return (p1.start <= p2.start <= p1.start + p1.length-1) || (p2.start <= p1.start <= p2.start+p2.length-1)
 end
+
+
 
 
 
