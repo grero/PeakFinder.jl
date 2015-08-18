@@ -113,9 +113,9 @@ function get_peaks{T<:Real}(X::Array{T,2}, timepts::Array{Float64,1}, limit::T=0
     end
 end
 
-function group_peaks(peaks::Array{Peak,1})
+function group_peaks{T<:AbstractPeak}(peaks::Array{T,1})
 	speaks = reverse(sort(peaks))
-	newpeaks = Array(Peak,0)
+	newpeaks = Array(T,0)
 	push!(newpeaks, speaks[1])
 	i = 2
 	while i <= length(speaks)
