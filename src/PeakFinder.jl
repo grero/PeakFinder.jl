@@ -146,7 +146,7 @@ end
 function check_random_groups(nbins::Int64, nsig::Int64,nruns::Int64=10000)
     @assert nsig <= nbins
     counts = Dict{Int64, Int64}()
-    idx = [1:nbins]
+    idx = collect(1:nbins)
     sidx = zeros(Int64,nsig)
     for i in 1:nruns
         shuffle!(idx)
