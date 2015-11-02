@@ -1,5 +1,6 @@
 module PeakFinder
 using Docile
+using Compat
 @docstrings
 
 include("types.jl")
@@ -77,7 +78,7 @@ end
 
 get_peaks(X, limit, minnbins) = get_peaks(X, [1.0:length(X)], limit,minnbins)
 
-function get_peaks{T<:Real}(X::Array{T,2}, timepts::Array{Float64,1}, limit::T=0.0, minnbins::Union(Int64,Symbol)=5,pvalue::Float64=0.01)
+@compat function get_peaks{T<:Real}(X::Array{T,2}, timepts::Array{Float64,1}, limit::T=0.0, minnbins::Union{Int64,Symbol}=5,pvalue::Float64=0.01)
     nbins, ncells = size(X)
     peaks = Array(Peak,0)
     cellidx = Array(Int64,0)
