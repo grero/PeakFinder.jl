@@ -6,11 +6,12 @@ using Compat
 include("types.jl")
 
 Docile.@doc meta("Find the set of contiguous intervals for which `X` exceeds `limits` for at least `minnbins` bins", return_type=Dict{Int64,Int64})->
-function get_intervals(X::Array{Float64,1},limit::Real=3,minnbins::Integer=5)
+function get_intervals(X::Array{Float64,1},limits::Array{Float64,1},minnbins::Integer=5)
     nbins = length(X)
     nsig = 0
     intervals = Dict{Int64,Int64}()
     for i=1:nbins
+        limit = limits[i]
         x = X[i]
         if !isfinite(x)
             continue
@@ -25,10 +26,15 @@ function get_intervals(X::Array{Float64,1},limit::Real=3,minnbins::Integer=5)
         end
     end
 	#make sure we pick up the last interval as well
-	if nsig >= minnbins && X[end] > limit
+    if nsig >= minnbins && X[end] > limits[end]
 		intervals[nbins-nsig+1] = nsig
 	end
     return intervals
+end
+
+function get_intervals(X::Array{Float64,1},limit::Real=3,minnbins::Integer=5)
+    limits = fill(limit,length(X))
+    get_intervals(X,limits,minnbins)
 end
 
 function get_contiguous!(counts::Dict{Int64,Int64},sidx::AbstractArray{Int64,1})
