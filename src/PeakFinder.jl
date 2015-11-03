@@ -67,7 +67,7 @@ function get_contiguous(sidx::AbstractArray{Int64,1})
 end
 
 
-function get_peaks{T<:Real}(X::Array{T,1}, timepts::Array{Float64,1}, limit::T=0.0, minnbins::Int64=5)
+@compat function get_peaks{T<:Real}(X::Array{T,1}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Int64=5)
 	intervals = get_intervals(X,limit,minnbins)
 	peaks = Array(Peak,length(intervals))
 	i = 1
@@ -84,7 +84,7 @@ end
 
 get_peaks(X, limit, minnbins) = get_peaks(X, [1.0:length(X)], limit,minnbins)
 
-@compat function get_peaks{T<:Real}(X::Array{T,2}, timepts::Array{Float64,1}, limit::T=0.0, minnbins::Union{Int64,Symbol}=5,pvalue::Float64=0.01)
+@compat function get_peaks{T<:Real}(X::Array{T,2}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Union{Int64,Symbol}=5,pvalue::Float64=0.01)
     nbins, ncells = size(X)
     peaks = Array(Peak,0)
     cellidx = Array(Int64,0)
