@@ -66,6 +66,26 @@ function get_contiguous(sidx::AbstractArray{Int64,1})
 	counts
 end
 
+"""
+Find peaks, i.e. periods in which the signal `X` exceeds `limit`. The optimum number of consecutive time points for which `X > limit` is determined by a cluster analysis, using the p-value `pvalue`.
+
+    function get_peaks{T<:Real}(X::Array{T,1}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Symbol=:optimum,pvalue::Real=0.05)
+"""
+@compat function get_peaks{T<:Real}(X::Array{T,1}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Symbol=:optimum,pvalue::Real=0.05)
+    nbins = length(X)
+    nsig = sum(X.>limit)
+    if nsig == 0
+        return Peak[],0
+    end
+    ngroups,PP = PeakFinder.check_random_groups(nbins, nsig)
+    idx = findfirst(1-PP.<pvalue)
+    if idx == 0
+        return Peak[],0
+    end
+    nn = ngroups[idx]
+    _peaks = get_peaks(X, timepts, limit, nn)
+    return _peaks,nn
+end
 
 @compat function get_peaks{T<:Real}(X::Array{T,1}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Int64=5)
 	intervals = get_intervals(X,limit,minnbins)

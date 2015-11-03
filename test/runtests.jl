@@ -84,6 +84,8 @@ function test_group_peaks()
 	println("Peak grouping test passed")
 end
 
+#TODO: Add test for finding peaks using cluster analysis
+
 test_contiguous()
 test_sigint()
 test_random_grouping()
