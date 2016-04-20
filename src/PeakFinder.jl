@@ -102,7 +102,7 @@ end
 	return peaks
 end
 
-get_peaks(X, limit, minnbins) = get_peaks(X, [1.0:length(X)], limit,minnbins)
+get_peaks(X, limit, minnbins) = get_peaks(X, [1.0:length(X);], limit,minnbins)
 
 @compat function get_peaks{T<:Real}(X::Array{T,2}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Union{Int64,Symbol}=5,pvalue::Float64=0.01)
     nbins, ncells = size(X)
