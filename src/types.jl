@@ -1,8 +1,8 @@
 import JLD
 import Base.==, Base.isless, Base.intersect, Base.in
-abstract AbstractPeak
+abstract type AbstractPeak end
 
-type Peak <: AbstractPeak
+struct Peak <: AbstractPeak
 	start::Float64
 	length::Float64
 	height::Float64
@@ -22,7 +22,7 @@ function overlaps(p1::AbstractPeak, p2::AbstractPeak)
 	return (p1.start <= p2.start <= p1.start + p1.length-1) || (p2.start <= p1.start <= p2.start+p2.length-1)
 end
 
-type RandomContiguousDistribution
+struct RandomContiguousDistribution
     n::Int64
     k::Int64
     P::Dict{Int64,Float64}
