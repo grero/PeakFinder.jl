@@ -5,11 +5,11 @@ function test_random_grouping()
     srand(1234)
     ngroups, PP = PeakFinder.check_random_groups(250,20)
     @test ngroups == [2,3,4,5,6]
-    @test_approx_eq PP[1] 0.9246992215145081
-    @test_approx_eq PP[2] 0.9938428874734607
-    @test_approx_eq PP[3] 0.9995046001415429
-    @test_approx_eq PP[4] 0.999929228591649
-    @test_approx_eq PP[5] 1.0
+    @test PP[1] ≈ 0.9246992215145081
+    @test PP[2] ≈ 0.9938428874734607
+    @test PP[3] ≈ 0.9995046001415429
+    @test PP[4] ≈ 0.999929228591649
+    @test PP[5] ≈ 1.0
     println("Random grouping test passed")
 end
 
