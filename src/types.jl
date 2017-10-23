@@ -1,4 +1,4 @@
-import JLD
+import JLD2
 import Base.==, Base.isless, Base.intersect, Base.in
 abstract type AbstractPeak end
 
@@ -38,8 +38,8 @@ function RandomContiguousDistribution(n::Int64,k::Int64)
     fname = joinpath(_path,"randomcontiguous.jd")
     kk = "$n-$k"
     if isfile(fname)
-        jff = JLD.jldopen(fname,"r")
-        if kk in names(jff)
+        jff = JLD2.jldopen(fname,"r")
+        if kk in keys(jff)
             pp = read(jff, kk)
             close(jff)
             return RandomContiguousDistribution(n,k,pp)
@@ -52,7 +52,7 @@ function RandomContiguousDistribution(n::Int64,k::Int64)
     ngroups,_pp = check_random_groups(n,k,100000)
     PP = Dict(zip(ngroups, _pp))
     #append the results to the cache
-    JLD.jldopen(fname,fmode) do ff
+    JLD2.jldopen(fname,fmode) do ff
         write(ff, kk, PP)
     end
     RandomContiguousDistribution(n,k,PP)
