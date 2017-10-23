@@ -49,7 +49,7 @@ function RandomContiguousDistribution(n::Int64,k::Int64)
         fmode = "w"
     end
     ngroups,_pp = check_random_groups(n,k,100000)
-    PP = Dict(ngroups, _pp)
+    PP = Dict(zip(ngroups, _pp))
     #append the results to the cache
     JLD.jldopen(fname,fmode) do ff
         write(ff, kk, PP)
