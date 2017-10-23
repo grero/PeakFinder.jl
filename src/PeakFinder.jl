@@ -1,11 +1,11 @@
 module PeakFinder
-using Docile
 using Compat
-@docstrings
 
 include("types.jl")
 
-Docile.@doc meta("Find the set of contiguous intervals for which `X` exceeds `limits` for at least `minnbins` bins", return_type=Dict{Int64,Int64})->
+"""
+Find the set of contiguous intervals for which `X` exceeds `limits` for at least `minnbins` bins.
+"""
 function get_intervals(X::Array{Float64,1},limits::Array{Float64,1},minnbins::Integer=5)
     nbins = length(X)
     nsig = 0
@@ -89,7 +89,7 @@ end
 
 @compat function get_peaks{T<:Real}(X::Array{T,1}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Int64=5)
 	intervals = get_intervals(X,limit,minnbins)
-	peaks = Array(Peak,length(intervals))
+    peaks = Array{Peak}(length(intervals))
 	i = 1
 	dt = diff(timepts)
 	for (k,v) in intervals
@@ -106,9 +106,9 @@ get_peaks(X, limit, minnbins) = get_peaks(X, [1.0:length(X);], limit,minnbins)
 
 @compat function get_peaks{T<:Real}(X::Array{T,2}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Union{Int64,Symbol}=5,pvalue::Float64=0.01)
     nbins, ncells = size(X)
-    peaks = Array(Peak,0)
-    cellidx = Array(Int64,0)
-    nsigbins = Array(Int64,0)
+    peaks = Array{Peak}(0)
+    cellidx = Array{Int64}(0)
+    nsigbins = Array{Int64}(0)
     for i in 1:ncells
         if minnbins == :optimum
             nsig = sum(X[:,i].>limit)
@@ -142,7 +142,7 @@ end
 
 function group_peaks{T<:AbstractPeak}(peaks::Array{T,1})
 	speaks = reverse(sort(peaks))
-	newpeaks = Array(T,0)
+    newpeaks = Array{T}(0)
 	push!(newpeaks, speaks[1])
 	i = 2
 	while i <= length(speaks)
