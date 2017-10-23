@@ -165,6 +165,7 @@ end
 
 function check_random_groups(nbins::Int64, nsig::Int64,nruns::Int64=10000)
     @assert nsig <= nbins
+    nsig <= nbins || ArgumentError("Number of significant bins cannot exceed total number of bins")
     counts = Dict{Int64, Int64}()
     idx = collect(1:nbins)
     sidx = zeros(Int64,nsig)
