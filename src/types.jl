@@ -30,7 +30,8 @@ end
 
 function RandomContiguousDistribution(n::Int64,k::Int64)
     #check for cached results
-    _path = joinpath((homedir()),".cached")
+
+    _path = "$(dirname(@__FILE__))/../deps/"
     if !ispath(_path)
         mkpath(_path)
     end
