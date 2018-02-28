@@ -71,7 +71,7 @@ Find peaks, i.e. periods in which the signal `X` exceeds `limit`. The optimum nu
 
     function get_peaks{T<:Real}(X::Array{T,1}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Symbol=:optimum,pvalue::Real=0.05)
 """
-@compat function get_peaks{T<:Real}(X::Array{T,1}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Symbol=:optimum,pvalue::Real=0.05)
+@compat function get_peaks{T<:Real}(X::Array{T,1}, timepts::AbstractVector{Float64}, limit::Union{Array{T,1}, T}=0.0, minnbins::Symbol=:optimum,pvalue::Real=0.05)
     nbins = length(X)
     nsig = sum(X.>limit)
     if nsig == 0
@@ -87,7 +87,7 @@ Find peaks, i.e. periods in which the signal `X` exceeds `limit`. The optimum nu
     return _peaks,nn
 end
 
-@compat function get_peaks{T<:Real}(X::Array{T,1}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Int64=5)
+@compat function get_peaks{T<:Real}(X::Array{T,1}, timepts::AbstractVector{Float64}, limit::Union{Array{T,1}, T}=0.0, minnbins::Int64=5)
 	intervals = get_intervals(X,limit,minnbins)
     peaks = Array{Peak}(length(intervals))
 	i = 1
