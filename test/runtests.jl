@@ -2,13 +2,13 @@ import PeakFinder
 using Base.Test
 
 function test_random_grouping()
-    srand(1234)
-    ngroups, PP = PeakFinder.check_random_groups(250,20)
+    RNG = MersenneTwister(1234)
+    ngroups, PP = PeakFinder.check_random_groups(250,20;RNG=RNG)
     @test ngroups == [2,3,4,5,6]
-    @test PP[1] ≈ 0.9246992215145081
-    @test PP[2] ≈ 0.9938428874734607
-    @test PP[3] ≈ 0.9995046001415429
-    @test PP[4] ≈ 0.999929228591649
+    @test PP[1] ≈ 0.9291383625312836
+    @test PP[2] ≈ 0.9955666785841973
+    @test PP[3] ≈ 0.9997139792634966
+    @test PP[4] ≈ 0.9999284948158742
     @test PP[5] ≈ 1.0
     println("Random grouping test passed")
 end
