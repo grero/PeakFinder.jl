@@ -1,5 +1,6 @@
 import PeakFinder
-using Base.Test
+using Random
+using Test
 
 function test_random_grouping()
     RNG = MersenneTwister(1234)
@@ -22,11 +23,11 @@ end
 
 function test_sigint()
 	X = zeros(50)
-	X[21:30] = 1.0
+	X[21:30] .= 1.0
 	intervals = PeakFinder.get_intervals(X,0.0, 10)
 	@test intervals == Dict((21 => 10))
 	fill!(X, 0.0)
-	X[41:50] = 1.0
+	X[41:50] .= 1.0
 	intervals = PeakFinder.get_intervals(X,0.0, 10)
 	@test intervals == Dict((41 => 10))
 	println("Sigint test passed")
@@ -35,19 +36,19 @@ end
 function test_peaks()
 	X = zeros(50)
 	x = collect(-5:4)
-	X[21:30] = exp(-x.^2/2) #gaussian peak
+	X[21:30] = exp.(-x.^2/2) #gaussian peak
 	peaks = PeakFinder.get_peaks(X, 0.0, 5)
 	@test peaks[1] == PeakFinder.Peak(21, 10, 1.0, 2.506624530883954, 26.0)
 	#test edge case using time point vector
 	fill!(X, 0)
-	X[41:50] = exp(-x.^2/2) #gaussian peak
+	X[41:50] = exp.(-x.^2/2) #gaussian peak
 	t = cumsum(fill(5.0, 50))
 	peaks = PeakFinder.get_peaks(X, t, 0.0, 5)
 	@test peaks[1] == PeakFinder.Peak(205.0,50.0,1.0,2.506624530883954,230.0)
 	println("Peak finding test passed")
     X = zeros(50,2)
-	X[21:30,1] = exp(-x.^2/2) #gaussian peak
-	X[41:50,2] = exp(-x.^2/2) #gaussian peak
+	X[21:30,1] = exp.(-x.^2/2) #gaussian peak
+	X[41:50,2] = exp.(-x.^2/2) #gaussian peak
 	peaks,cellidx = PeakFinder.get_peaks(X, t, 0.0, 5)
 	@test peaks[1] == PeakFinder.Peak(105, 50.0, 1.0, 2.506624530883954, 130.0)
     @test cellidx[1] == 1
@@ -73,7 +74,7 @@ function test_peak_overlaps()
 end
 
 function test_group_peaks()
-	peaks = Array(PeakFinder.Peak,0)
+    peaks = PeakFinder.Peak[]
 	push!(peaks, PeakFinder.Peak(4.0, 5.0, 4.0, 10.0, 6.0))
 	push!(peaks, PeakFinder.Peak(4.0, 6.0, 4.0, 8.0, 6.0))
 	push!(peaks, PeakFinder.Peak(10, 4.0, 4.0, 12.0, 12.0))

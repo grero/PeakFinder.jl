@@ -1,4 +1,5 @@
 module PeakFinder
+using Random
 
 include("types.jl")
 
@@ -115,7 +116,7 @@ function get_peaks(X::Array{T,2}, timepts::Array{Float64,1}, limit::Union{Array{
                 continue #skip this cell
             end
             ngroups,PP = PeakFinder.check_random_groups(nbins, nsig)
-            idx = findfirst(1-PP.<pvalue)
+            idx = findfirst(1 .- PP.<pvalue)
             if idx == 0
                 continue #ksip this cell
             end
