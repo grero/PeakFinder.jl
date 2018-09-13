@@ -1,5 +1,4 @@
 module PeakFinder
-using Compat
 
 include("types.jl")
 
@@ -71,7 +70,7 @@ Find peaks, i.e. periods in which the signal `X` exceeds `limit`. The optimum nu
 
     function get_peaks{T<:Real}(X::Array{T,1}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Symbol=:optimum,pvalue::Real=0.05)
 """
-@compat function get_peaks{T<:Real}(X::Array{T,1}, timepts::AbstractVector{Float64}, limit::Union{Array{T,1}, T}=0.0, minnbins::Symbol=:optimum,pvalue::Real=0.05)
+function get_peaks(X::Array{T,1}, timepts::AbstractVector{Float64}, limit::Union{Array{T,1}, T}=0.0, minnbins::Symbol=:optimum,pvalue::Real=0.05) where T<:Real
     nbins = length(X)
     nsig = sum(X.>limit)
     if nsig == 0
@@ -87,9 +86,9 @@ Find peaks, i.e. periods in which the signal `X` exceeds `limit`. The optimum nu
     return _peaks,nn
 end
 
-@compat function get_peaks{T<:Real}(X::Array{T,1}, timepts::AbstractVector{Float64}, limit::Union{Array{T,1}, T}=0.0, minnbins::Int64=5)
+function get_peaks(X::Array{T,1}, timepts::AbstractVector{Float64}, limit::Union{Array{T,1}, T}=0.0, minnbins::Int64=5) where T<:Real
 	intervals = get_intervals(X,limit,minnbins)
-    peaks = Array{Peak}(length(intervals))
+    peaks = Array{Peak}(undef, length(intervals))
 	i = 1
 	dt = diff(timepts)
 	for (k,v) in intervals
@@ -104,11 +103,11 @@ end
 
 get_peaks(X, limit, minnbins) = get_peaks(X, [1.0:length(X);], limit,minnbins)
 
-@compat function get_peaks{T<:Real}(X::Array{T,2}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Union{Int64,Symbol}=5,pvalue::Float64=0.01)
+function get_peaks(X::Array{T,2}, timepts::Array{Float64,1}, limit::Union{Array{T,1}, T}=0.0, minnbins::Union{Int64,Symbol}=5,pvalue::Float64=0.01) where T<:Real
     nbins, ncells = size(X)
-    peaks = Array{Peak}(0)
-    cellidx = Array{Int64}(0)
-    nsigbins = Array{Int64}(0)
+    peaks = Peak[]
+    cellidx = Int64[]
+    nsigbins = Int64[]
     for i in 1:ncells
         if minnbins == :optimum
             nsig = sum(X[:,i].>limit)
@@ -140,9 +139,9 @@ get_peaks(X, limit, minnbins) = get_peaks(X, [1.0:length(X);], limit,minnbins)
     end
 end
 
-function group_peaks{T<:AbstractPeak}(peaks::Array{T,1})
+function group_peaks(peaks::Array{T,1}) where T<:AbstractPeak
 	speaks = reverse(sort(peaks))
-    newpeaks = Array{T}(0)
+    newpeaks = T[]
 	push!(newpeaks, speaks[1])
 	i = 2
 	while i <= length(speaks)
@@ -168,7 +167,7 @@ function check_random_groups(nbins::Int64, nsig::Int64,nruns::Int64=10000)
     nsig <= nbins || ArgumentError("Number of significant bins cannot exceed total number of bins")
     counts = Dict{Int64, Int64}()
     idx = collect(1:nbins)
-    sidx = zeros(Int64,nsig)
+    sidx = fill(0, nsig)
     for i in 1:nruns
         shuffle!(idx)
         for j in 1:nsig
